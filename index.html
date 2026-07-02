@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Confronto Decisivo — Escola Sabatina Jovens</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff;
+    --bg-panel:#f3f9fd;
+    --ink:#0c2340;
+    --ink-dim:#4d6178;
+    --blue-deep:#0d3868;
+    --blue:#1c6fb0;
+    --blue-light:#5bb4ea;
+    --blue-pale:#e6f3fb;
+    --blue-pale2:#d3e9f8;
+    --line:#cfe3f3;
+    --clay:#b0492f;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
+  }
+  h1,h2,h3{font-family:'Fraunces',serif; font-weight:500; margin:0;}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.72rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--blue);
+    display:block;
+    margin-bottom:0.9rem;
+  }
+  section{padding:4rem 1.4rem; max-width:760px; margin:0 auto;}
+
+  /* ---------- TIRINHA ---------- */
+  .tirinha-section{
+    max-width:none; padding:2.4rem 1.2rem 3rem; text-align:center;
+    background:linear-gradient(180deg, var(--blue-pale), #ffffff);
+    border-bottom:1px solid var(--line);
+  }
+  .tirinha-wrap{
+    position:relative; max-width:560px; margin:1.4rem auto 0;
+    border-radius:16px; overflow:hidden; cursor:pointer;
+    border:2px solid var(--blue-deep);
+    box-shadow:0 14px 34px rgba(13,56,104,0.16);
+  }
+  .tirinha-wrap img{
+    display:block; width:100%; height:auto;
+    filter: blur(14px) grayscale(1) brightness(1.05);
+    transform:scale(1.04);
+    transition: filter 0.9s ease, transform 0.9s ease;
+  }
+  .tirinha-wrap.revealed img{
+    filter:none; transform:scale(1);
+  }
+  .tirinha-overlay{
+    position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    background:rgba(12,35,64,0.42);
+    color:#fff; gap:0.7rem; transition:opacity 0.5s ease;
+  }
+  .tirinha-wrap.revealed .tirinha-overlay{ opacity:0; pointer-events:none; }
+  .tirinha-btn{
+    font-family:'JetBrains Mono',monospace; font-size:0.72rem; letter-spacing:0.08em; text-transform:uppercase;
+    background:#fff; color:var(--blue-deep); padding:0.6rem 1.1rem; border-radius:30px; border:none;
+  }
+  .tirinha-caption{ font-size:0.85rem; color:var(--ink-dim); max-width:34ch; margin:1.1rem auto 0; }
+  .tirinha-note{
+    max-width:560px; margin:1.4rem auto 0; text-align:left;
+    background:#fff; border:1px solid var(--line); border-radius:12px; padding:1.1rem 1.2rem;
+    display:none;
+  }
+  .tirinha-note.show{ display:block; animation:fadein 0.5s ease; }
+  @keyframes fadein{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+  .tirinha-note label{ font-family:'JetBrains Mono',monospace; font-size:0.68rem; letter-spacing:0.06em; color:var(--blue); text-transform:uppercase; }
+  .tirinha-note textarea{
+    width:100%; margin-top:0.6rem; border:1px solid var(--line); border-radius:8px; padding:0.7rem;
+    font-family:'Inter',sans-serif; font-size:0.9rem; color:var(--ink); resize:vertical; min-height:70px;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:82vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:3rem 1.4rem;
+    overflow:hidden;
+    background:linear-gradient(180deg, #ffffff, var(--blue-pale) 85%);
+    max-width:none;
+  }
+  .jar-wrap{ position:relative; width:120px; height:150px; margin-bottom:1.6rem; }
+  .jar{
+    position:absolute; left:50%; top:30px; transform:translateX(-50%);
+    width:54px; height:78px;
+    background:linear-gradient(180deg, var(--blue-light), var(--blue) 60%, var(--blue-deep));
+    border-radius:8px 8px 22px 22px;
+    box-shadow: inset -6px 0 10px rgba(0,0,0,0.18);
+    animation: crack 3.2s ease-in-out 0.4s both;
+  }
+  .jar::before{
+    content:'';
+    position:absolute; top:-16px; left:50%; transform:translateX(-50%);
+    width:16px; height:20px; background:var(--blue);
+    border-radius:3px;
+  }
+  .crackline{
+    position:absolute; left:50%; top:30px; transform:translateX(-50%);
+    width:54px; height:78px; overflow:visible; pointer-events:none;
+  }
+  .crackline svg{width:100%;height:100%;}
+  .crackline path{
+    stroke:#ffffff; stroke-width:1.6; fill:none;
+    stroke-dasharray:40; stroke-dashoffset:40;
+    animation: draw 0.6s ease-out 1.6s forwards;
+  }
+  @keyframes crack{
+    0%,45%{ transform:translateX(-50%) rotate(0deg); }
+    50%{ transform:translateX(-50%) rotate(-2deg); }
+    55%{ transform:translateX(-50%) rotate(2deg); }
+    60%{ transform:translateX(-50%) rotate(-1deg); }
+    65%,100%{ transform:translateX(-50%) rotate(0deg); }
+  }
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+  .mote{
+    position:absolute; bottom:60px; left:50%;
+    width:4px; height:4px; border-radius:50%;
+    background:var(--blue-light);
+    opacity:0;
+    animation: drift 4.5s ease-in 1.8s infinite;
+  }
+  @keyframes drift{
+    0%{ opacity:0; transform:translate(0,0) scale(0.6); }
+    12%{ opacity:0.9; }
+    100%{ opacity:0; transform:translate(var(--dx,20px), -160px) scale(1.3); }
+  }
+  .hero h1{
+    font-size:clamp(2.4rem, 8vw, 3.6rem);
+    color:var(--ink);
+    max-width:12ch;
+    line-height:1.05;
+  }
+  .hero h1 em{ font-style:italic; color:var(--blue); }
+  .hero .verse{
+    margin-top:1.8rem;
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    font-size:1.05rem;
+    color:var(--ink-dim);
+    max-width:34ch;
+  }
+  .hero .ref{
+    margin-top:0.6rem;
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.78rem;
+    color:var(--blue);
+  }
+  .scrollcue{
+    margin-top:3rem; font-size:0.7rem; letter-spacing:0.12em;
+    color:var(--ink-dim); text-transform:uppercase;
+    font-family:'JetBrains Mono',monospace;
+    animation: bob 2s ease-in-out infinite;
+  }
+  @keyframes bob{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(6px);} }
+
+  /* ---------- INTRO ---------- */
+  .intro p{ color:var(--ink-dim); font-size:1.02rem; }
+  .intro strong{ color:var(--ink); }
+
+  /* ---------- TIMELINE (now interactive) ---------- */
+  .timeline{ position:relative; padding-left:1.6rem; margin-top:2.2rem; }
+  .timeline::before{
+    content:''; position:absolute; left:5px; top:6px; bottom:6px; width:2px;
+    background:linear-gradient(var(--blue-light), var(--blue-deep));
+  }
+  .tl-item{ position:relative; padding-bottom:1.1rem; }
+  .tl-item:last-child{ padding-bottom:0; }
+  .tl-item::before{
+    content:''; position:absolute; left:-1.6rem; top:4px;
+    width:12px; height:12px; border-radius:50%;
+    background:var(--blue); border:2px solid #fff; box-shadow:0 0 0 1.5px var(--blue);
+  }
+  .tl-head{
+    width:100%; text-align:left; background:none; border:none; cursor:pointer; padding:0;
+    font-family:'Inter',sans-serif; color:inherit; display:flex; flex-direction:column; gap:0.2rem;
+  }
+  .tl-day{ font-family:'JetBrains Mono',monospace; font-size:0.72rem; color:var(--blue); letter-spacing:0.08em; }
+  .tl-head h3{ font-size:1.15rem; margin:0.2rem 0 0; color:var(--ink); display:flex; align-items:center; gap:0.4rem; }
+  .tl-head h3 .chev{ font-size:0.7rem; transition:transform 0.3s; color:var(--blue); }
+  .tl-item.open .tl-head h3 .chev{ transform:rotate(90deg); }
+  .tl-body{ max-height:0; overflow:hidden; transition:max-height 0.4s ease; }
+  .tl-item.open .tl-body{ max-height:220px; margin-top:0.5rem; }
+  .tl-body p{ margin:0; color:var(--ink-dim); font-size:0.92rem; padding-right:0.4rem; }
+
+  /* ---------- CHARACTER CARDS ---------- */
+  .cast-grid{
+    display:grid; grid-template-columns:repeat(2,1fr); gap:0.9rem; margin-top:2rem;
+  }
+  @media(max-width:480px){ .cast-grid{grid-template-columns:1fr;} }
+  .card{
+    perspective:1000px; height:190px; cursor:pointer;
+  }
+  .card-inner{
+    position:relative; width:100%; height:100%; transition:transform 0.6s cubic-bezier(.2,.8,.2,1);
+    transform-style:preserve-3d;
+  }
+  .card.flipped .card-inner{ transform:rotateY(180deg); }
+  .card-face{
+    position:absolute; inset:0; backface-visibility:hidden;
+    border-radius:10px; padding:1.1rem;
+    display:flex; flex-direction:column; justify-content:center;
+  }
+  .card-front{
+    background:var(--bg-panel); border:1px solid var(--line);
+  }
+  .card-front .name{ font-family:'Fraunces',serif; font-size:1.25rem; color:var(--ink); }
+  .card-front .tag{ font-family:'JetBrains Mono',monospace; font-size:0.68rem; color:var(--blue); margin-top:0.4rem; letter-spacing:0.05em;}
+  .card-front .hint{ margin-top:auto; font-size:0.72rem; color:var(--ink-dim); }
+  .card-back{
+    background:linear-gradient(160deg, var(--blue-deep), var(--blue));
+    color:#fff;
+    transform:rotateY(180deg);
+    font-size:0.86rem;
+  }
+  .card-back .name{ font-family:'Fraunces',serif; font-weight:600; margin-bottom:0.4rem; }
+
+  /* ---------- ACCORDION (daily readings) ---------- */
+  .day-list{ margin-top:2rem; display:flex; flex-direction:column; gap:0.7rem; }
+  .day{
+    border:1px solid var(--line); border-radius:10px; overflow:hidden;
+    background:var(--bg-panel);
+  }
+  .day-head{
+    width:100%; text-align:left; background:none; border:none; color:inherit;
+    padding:1rem 1.1rem; cursor:pointer; display:flex; align-items:center; gap:0.9rem;
+    font-family:'Inter',sans-serif;
+  }
+  .day-head .tag{
+    font-family:'JetBrains Mono',monospace; font-size:0.66rem; color:#fff;
+    background:var(--blue); padding:0.22rem 0.5rem; border-radius:5px; white-space:nowrap;
+  }
+  .day-head .title{ font-family:'Fraunces',serif; font-size:1.05rem; color:var(--ink); flex:1; }
+  .day-head .chev{ transition:transform 0.3s; color:var(--blue); }
+  .day.open .chev{ transform:rotate(180deg); }
+  .day-body{ max-height:0; overflow:hidden; transition:max-height 0.4s ease; }
+  .day.open .day-body{ max-height:600px; }
+  .day-body-inner{ padding:0 1.1rem 1.2rem; }
+  .day-body p{ color:var(--ink-dim); font-size:0.92rem; margin:0 0 0.8rem; }
+  .day-body .verseref{ font-family:'JetBrains Mono',monospace; font-size:0.72rem; color:var(--blue); margin-bottom:0.7rem; display:block;}
+  .qbox{
+    border-left:3px solid var(--blue); background:var(--blue-pale);
+    padding:0.7rem 0.9rem; border-radius:0 6px 6px 0; font-size:0.88rem; color:var(--ink);
+    font-style:italic;
+  }
+
+  /* ---------- MEMORY VERSE GAME ---------- */
+  .versegame{ margin-top:2rem; background:var(--bg-panel); border:1px solid var(--line); border-radius:14px; padding:1.4rem; text-align:center; }
+  .versegame h3{ color:var(--blue-deep); font-size:1.15rem; margin-bottom:0.5rem; }
+  .versegame p.hint{ color:var(--ink-dim); font-size:0.85rem; margin-bottom:1rem; }
+  .versewords{ display:flex; flex-wrap:wrap; gap:0.4rem; justify-content:center; }
+  .versewords span{
+    font-family:'Fraunces',serif; font-size:1rem; padding:0.3rem 0.55rem; border-radius:6px;
+    background:var(--blue-pale2); color:var(--ink); cursor:pointer; transition:background 0.2s, color 0.2s;
+    user-select:none;
+  }
+  .versewords span.hidden{ background:var(--blue-deep); color:var(--blue-deep); }
+  .versewords span.hidden:hover{ opacity:0.75; }
+  .versegame button.reset{
+    margin-top:1.1rem; font-family:'JetBrains Mono',monospace; font-size:0.7rem; letter-spacing:0.06em;
+    background:none; border:1px solid var(--blue); color:var(--blue); padding:0.4rem 0.9rem; border-radius:20px; cursor:pointer;
+  }
+
+  /* ---------- ACTIVITY ---------- */
+  .activity{ background:var(--bg-panel); border-radius:14px; padding:1.6rem; margin-top:1rem; border:1px solid var(--line); }
+  .activity h3{ color:var(--blue-deep); font-size:1.2rem; margin-bottom:0.6rem; }
+  .mindmap{ display:flex; flex-wrap:wrap; gap:0.5rem; justify-content:center; margin:1.4rem 0; }
+  .mindmap .center{
+    font-family:'Fraunces',serif; font-weight:600; font-size:1.1rem; color:#fff;
+    background:var(--blue-deep); padding:0.5rem 1.1rem; border-radius:30px; width:100%; text-align:center;
+  }
+  .mindmap .word{
+    font-size:0.82rem; padding:0.35rem 0.8rem; border-radius:20px;
+    border:1px solid var(--blue-light); color:var(--ink-dim); cursor:default;
+  }
+  .mindmap .word.added{ background:var(--blue-pale2); border-color:var(--blue); color:var(--blue-deep); }
+  .mm-input-row{ display:flex; gap:0.5rem; margin-top:1rem; }
+  .mm-input-row input{
+    flex:1; background:#fff; border:1px solid var(--line);
+    border-radius:8px; padding:0.6rem 0.8rem; color:var(--ink); font-family:'Inter',sans-serif; font-size:0.88rem;
+  }
+  .mm-input-row button{
+    background:var(--blue-deep); color:#fff; border:none; border-radius:8px; padding:0 1.1rem;
+    font-family:'JetBrains Mono',monospace; font-size:0.75rem; cursor:pointer;
+  }
+
+  /* ---------- QUIZ ---------- */
+  .quiz-opts{ display:flex; flex-direction:column; gap:0.6rem; margin-top:1.2rem; }
+  .quiz-opts button{
+    text-align:left; background:#fff; border:1px solid var(--line);
+    color:var(--ink); padding:0.8rem 1rem; border-radius:8px; font-size:0.9rem;
+    cursor:pointer; font-family:'Inter',sans-serif; transition:border-color 0.2s, background 0.2s;
+  }
+  .quiz-opts button:hover, .quiz-opts button.picked{ border-color:var(--blue); background:var(--blue-pale); }
+  .quiz-result{
+    margin-top:1rem; padding:0.9rem 1rem; border-radius:8px; background:var(--blue-pale);
+    border-left:3px solid var(--blue); font-size:0.9rem; display:none; color:var(--ink);
+  }
+  .quiz-result.show{ display:block; }
+
+  /* ---------- CLOSING ---------- */
+  .closing{ text-align:center; }
+  .closing .bigverse{
+    font-family:'Fraunces',serif; font-style:italic; font-size:1.4rem; color:var(--ink);
+    max-width:26ch; margin:1.4rem auto; line-height:1.4;
+  }
+  .closing .ref{ font-family:'JetBrains Mono',monospace; font-size:0.75rem; color:var(--blue); }
+  .story{ text-align:left; color:var(--ink-dim); font-size:0.95rem; margin-top:2rem; background:var(--bg-panel); padding:1.3rem; border-radius:12px; border:1px solid var(--line);}
+  .story strong{ color:var(--ink); }
+  .dialogo{ margin-top:2rem; text-align:left; }
+  .dialogo li{ color:var(--ink-dim); margin-bottom:0.7rem; font-size:0.95rem; }
+  footer{ text-align:center; padding:2.5rem 1.4rem 3.5rem; color:var(--ink-dim); font-size:0.78rem; font-family:'JetBrains Mono',monospace; border-top:1px solid var(--line); margin-top:2rem;}
+</style>
+</head>
+<body>
+
+<div class="tirinha-section">
+  <span class="eyebrow">Antes de começar</span>
+  <h2 style="font-size:1.5rem;">A tirinha desta semana</h2>
+  <p class="tirinha-caption">Toque na imagem para revelar a cena.</p>
+  <div class="tirinha-wrap" id="tirinha">
+    <img src="data:image/png;base64,__TIRINHA_B64__" alt="Tirinha da lição — cena de abertura">
+    <div class="tirinha-overlay">
+      <button class="tirinha-btn" id="tirinha-btn">Toque para revelar</button>
+    </div>
+  </div>
+  <div class="tirinha-note" id="tirinha-note">
+    <label>Sua primeira impressão</label>
+    <textarea placeholder="A partir da tirinha, do texto-chave e do título, anote suas primeiras impressões sobre o que trata a lição desta semana..."></textarea>
+  </div>
+</div>
+
+<div class="hero">
+  <span class="eyebrow">Escola Sabatina · Jovens · 28 jun – 4 jul 2026</span>
+  <div class="jar-wrap">
+    <div class="jar"></div>
+    <div class="crackline"><svg viewBox="0 0 54 78"><path d="M27 8 L20 30 L30 42 L18 60"/></svg></div>
+    <div class="mote" style="left:44%; --dx:-30px; animation-delay:2.0s;"></div>
+    <div class="mote" style="left:56%; --dx:34px; animation-delay:2.6s;"></div>
+    <div class="mote" style="left:50%; --dx:6px; animation-delay:3.1s;"></div>
+    <div class="mote" style="left:38%; --dx:-14px; animation-delay:3.6s;"></div>
+  </div>
+  <h1>Confronto <em>decisivo</em></h1>
+  <p class="verse">"Se o grão de trigo, caindo na terra, não morrer, fica ele só; mas, se morrer, produz muito fruto."</p>
+  <p class="ref">João 12:24 · texto da semana: João 11:43–12:33</p>
+  <div class="scrollcue">role para começar ↓</div>
+</div>
+
+<section class="intro">
+  <span class="eyebrow">Antes de tudo</span>
+  <p>Um frasco de nardo puro custava o salário de um ano. Quando Maria o quebrou aos pés de Jesus, o perfume tomou conta da casa inteira — e ninguém mais conseguiu ignorar o que estava acontecendo ali.</p>
+  <p>Essa semana marca <strong>o início do fim</strong>: Lázaro sai do túmulo, os líderes religiosos decidem matar Jesus, uma multidão O aclama como rei sem entender nada, e uma mulher é a única que parece realmente estar ouvindo. Sete dias, quatro reações completamente diferentes ao mesmo Jesus. E você — qual delas é a sua?</p>
+</section>
+
+<section>
+  <span class="eyebrow">A cena em ordem</span>
+  <h2 style="font-size:1.6rem; margin-bottom:0.4rem;">Linha do tempo da semana</h2>
+  <p style="color:var(--ink-dim); font-size:0.9rem; margin-top:0.4rem;">Toque em cada momento para abrir os detalhes.</p>
+  <div class="timeline" id="timeline"></div>
+</section>
+
+<section>
+  <span class="eyebrow">Quem está em cena</span>
+  <h2 style="font-size:1.6rem; margin-bottom:0.4rem;">Toque em cada card para virar</h2>
+  <div class="cast-grid" id="cast"></div>
+</section>
+
+<section>
+  <span class="eyebrow">Estudo do dia</span>
+  <h2 style="font-size:1.6rem; margin-bottom:0.4rem;">Os sete "com" da semana</h2>
+  <p style="color:var(--ink-dim); margin-top:0.4rem;">Cada dia da lição começa com "com" — de contexto a comunidade. Toque para abrir.</p>
+  <div class="day-list" id="days"></div>
+</section>
+
+<section>
+  <div class="versegame">
+    <h3>Jogo da memorização</h3>
+    <p class="hint">Toque nas palavras para escondê-las. Tente recitar o versículo de cor.</p>
+    <div class="versewords" id="versewords"></div>
+    <button class="reset" id="verse-reset">mostrar tudo de novo</button>
+  </div>
+</section>
+
+<section>
+  <div class="activity">
+    <h3>Rede semântica: <em>Entrega</em></h3>
+    <p style="color:var(--ink-dim); font-size:0.9rem;">A lição de quarta-feira propõe montar, em classe, um mapa mental a partir dessa palavra. Comecem com estas e completem juntos, ao vivo:</p>
+    <div class="mindmap" id="mindmap">
+      <div class="center">ENTREGA</div>
+      <div class="word">sacrifício</div>
+      <div class="word">confiança</div>
+      <div class="word">missão</div>
+      <div class="word">amor maior que o medo</div>
+      <div class="word">obediência</div>
+    </div>
+    <div class="mm-input-row">
+      <input type="text" id="mm-input" placeholder="Adicionar palavra da turma...">
+      <button id="mm-add">Adicionar</button>
+    </div>
+  </div>
+</section>
+
+<section>
+  <span class="eyebrow">E você?</span>
+  <h2 style="font-size:1.6rem;">Qual personagem mais te representa nesta fase da vida?</h2>
+  <div class="quiz-opts" id="quiz"></div>
+  <div class="quiz-result" id="quiz-result"></div>
+</section>
+
+<section class="closing">
+  <span class="eyebrow">Para fechar</span>
+  <p class="bigverse">"A Minha alma está angustiada..."</p>
+  <p class="ref">João 12:27 — a primeira vez que ouvimos, na voz de Jesus, o eco do que viria no Getsêmani</p>
+
+  <div class="story">
+    <p><strong>Uma história para contar em classe:</strong> Jim Elliot tinha tudo pela frente — talento, estudo, futuro garantido. Ainda assim, deixou tudo para levar o evangelho a um povo indígena isolado no Equador. Foi morto pouco depois de chegar. Para muitos, um fracasso. Anos depois, aquele mesmo povo — incluindo pessoas envolvidas em sua morte — aceitou a Cristo. O grão que caiu e morreu deu fruto.</p>
+  </div>
+
+  <ul class="dialogo">
+    <li><strong>1.</strong> Em quais áreas da sua vida suas próprias expectativas podem estar falando mais alto do que a voz de Jesus?</li>
+    <li><strong>2.</strong> Na prática, o que significa "ouvir Jesus" quando Ele aponta para renúncia ou mudança de rota?</li>
+  </ul>
+</section>
+
+<footer>
+  Feito por Joice Araújo · baseado na lição da Escola Sabatina de Jovens · 3º trim. 2026 · "Resgate: as cenas finais da vida de Cristo" · texto original: Otacílio Porfírio
+</footer>
+
+<script>
+  // ---- Tirinha reveal ----
+  const tirinha = document.getElementById('tirinha');
+  const tirinhaNote = document.getElementById('tirinha-note');
+  tirinha.addEventListener('click', ()=>{
+    tirinha.classList.add('revealed');
+    setTimeout(()=> tirinhaNote.classList.add('show'), 500);
+  });
+
+  // ---- Timeline (now interactive accordion) ----
+  const timelineData = [
+    {day:"Antes da semana", title:"Lázaro volta a viver", body:"O último e maior milagre público de Jesus. A partir daqui, tudo muda de velocidade."},
+    {day:"Dias seguintes", title:"O conselho decide matá-Lo", body:"Caifás propõe a \"solução simples\": um homem morre para o povo não se perder. Ele não imaginava o quanto estava certo, do jeito errado."},
+    {day:"Seis dias antes da Páscoa", title:"Jantar em Betânia", body:"Maria unge os pés de Jesus com nardo puro. Judas reclama do \"desperdício\". Jesus a defende: ela entendeu algo que ninguém mais percebeu."},
+    {day:"Dia seguinte", title:"Entrada triunfal em Jerusalém", body:"\"Hosana!\" A mesma multidão que O aclama como rei vai, em poucos dias, pedir Sua morte."},
+    {day:"No templo", title:"Uns gregos procuram Jesus", body:"Ele fala do grão de trigo que precisa morrer para dar fruto — e Sua alma se angustia. Um prenúncio do Getsêmani."}
+  ];
+  const timelineEl = document.getElementById('timeline');
+  timelineData.forEach(t=>{
+    const item = document.createElement('div');
+    item.className = 'tl-item';
+    item.innerHTML = `
+      <button class="tl-head">
+        <span class="tl-day">${t.day}</span>
+        <h3>${t.title} <span class="chev">›</span></h3>
+      </button>
+      <div class="tl-body"><p>${t.body}</p></div>`;
+    item.querySelector('.tl-head').addEventListener('click', ()=> item.classList.toggle('open'));
+    timelineEl.appendChild(item);
+  });
+
+  // ---- Cast cards ----
+  const cast = [
+    {name:"Lázaro", tag:"O RESGATADO", back:"Foi tirado do túmulo pela voz de Jesus. Sua vida de volta virou o estopim de tudo que viria a seguir."},
+    {name:"Maria", tag:"A QUE OUVIU", back:"Quebrou um frasco de um ano de salário sem se importar com o julgamento alheio. Foi a única que parecia entender o que estava por vir."},
+    {name:"Judas", tag:"A GANÂNCIA DISFARÇADA", back:"Chamou o gesto de Maria de desperdício. João é claro: não era zelo pelos pobres, era ganância — ele roubava do caixa comum."},
+    {name:"Simão", tag:"O PRECONCEITO RELIGIOSO", back:"Julgou Maria por seu passado, em vez de ver a transformação diante dele. Conhecia a lei, mas não reconheceu a graça."},
+    {name:"Caifás", tag:"O CÁLCULO POLÍTICO", back:"Achou que sacrificar um homem resolveria tudo. Estava certo — só não do jeito que ele pensava."},
+    {name:"A multidão", tag:"A EUFORIA RASA", back:'Gritou "Hosana!" sem entender o Reino que Jesus vinha estabelecer. Dias depois, gritaria outra coisa.'},
+    {name:"Filipe e André", tag:"OS QUE CONECTAM", back:"Não tinham grandes respostas. Só levaram os gregos até Jesus — e isso foi suficiente."},
+    {name:"Jesus", tag:"O QUE SEGUE MESMO SABENDO", back:"Sabia exatamente o que O esperava e foi mesmo assim. Amor maior do que o sofrimento que se aproximava."}
+  ];
+  const castEl = document.getElementById('cast');
+  cast.forEach(c=>{
+    const card = document.createElement('div');
+    card.className='card';
+    card.innerHTML = `<div class="card-inner">
+      <div class="card-face card-front">
+        <div class="name">${c.name}</div>
+        <div class="tag">${c.tag}</div>
+        <div class="hint">toque para revelar →</div>
+      </div>
+      <div class="card-face card-back"><div class="name">${c.name}</div><div>${c.back}</div></div>
+    </div>`;
+    card.addEventListener('click', ()=> card.classList.toggle('flipped'));
+    castEl.appendChild(card);
+  });
+
+  // ---- Daily accordion ----
+  const days = [
+    {tag:"DOM 28/06", title:"comTEXTO — O início do fim", verse:"João 11:43–12:33 (texto-chave)",
+     body:"A ressurreição de Lázaro foi o último grande milagre público de Jesus — e o ponto sem volta. Mesmo sabendo o preço que viria, Ele seguiu em frente. Um amor maior do que a dor que O esperava.",
+     q:"Se Jesus sabia o que a ressurreição de Lázaro custaria, por que mesmo assim realizou o milagre?"},
+    {tag:"SEG 29/06", title:"comPREENDA — Duas reações, mesmo engano",
+     body:"Os líderes se sentem ameaçados e tramam a morte de Jesus. O povo se empolga e sonha com um rei terreno. Motivos opostos, mesmo erro: ninguém parou para realmente ouvir o que Jesus dizia sobre Sua missão.",
+     q:"Você se surpreende ao ver líderes religiosos, que conheciam a Bíblia, planejando a morte de Jesus? Que alerta isso traz para nós, que também estudamos a Bíblia?"},
+    {tag:"TER 30/06", title:"comENTE — Alguém estava ouvindo",
+     body:"Na casa de Simão, Maria unge os pés de Jesus com nardo puro e os enxuga com os cabelos. Simão a julga; Judas reclama do desperdício, por ganância — não por amor aos pobres. Jesus a defende: sem saber plenamente, ela O preparava para o sepultamento.",
+     q:"O que ajuda você a manter viva a lembrança do que Jesus já fez em sua vida?"},
+    {tag:"QUA 01/07", title:"comPARE — Momento hipertexto",
+     body:"Dia de comparar textos paralelos: Jesus preparando os discípulos para Sua morte (Mc 8; 9; 10), outros relatos da unção (Mt 26, Mc 14, Lc 7) e a vitória sobre Satanás na cruz (Hb 2, Ap 12). E a atividade da rede semântica com a palavra 'Entrega'.",
+     q:"Qual desses personagens da semana mais representa você hoje — e por quê?"},
+    {tag:"QUI 02/07", title:"comPARTILHE — Está chegando",
+     body:"Jesus chora no túmulo de Lázaro, sabendo o que aquele milagre desencadearia. É ferido pela crítica a Maria. Entra em Jerusalém sabendo que os mesmos 'Hosanas' se tornariam pedidos por Sua morte. Diante de gregos que O procuram, fala do grão de trigo que precisa morrer — e Sua alma se angustia, antecipando o Getsêmani.",
+     q:"O que ficou mais claro para você sobre o peso que Jesus já carregava antes mesmo do Getsêmani?"},
+    {tag:"SEX 03/07", title:"comSENSO — O presente perfumado",
+     body:"Maria agiu movida pelo Espírito, sem entender totalmente o alcance do próprio gesto. Jesus dá sentido a ele: o frasco quebrado antecipa Seu corpo partido — e o perfume que se espalhou é figura do evangelho que, depois da ressurreição, encheria a Terra.",
+     q:"Como os líderes religiosos reagiram à ressurreição de Lázaro (Jo 11:47-54)? E a multidão, no dia seguinte (Jo 12:12-19)?"},
+    {tag:"SÁB 04/07", title:"comUNIDADE — Quando ouvir muda tudo",
+     body:"O grão de trigo que morre para dar fruto (Jo 12:24). A história de Jim Elliot, que perdeu a vida jovem levando o evangelho a um povo isolado — fruto que só apareceu anos depois. A pergunta que fica: estamos realmente ouvindo Jesus, ou só esperando que Ele confirme nossos próprios planos?",
+     q:"Em quais áreas da sua vida suas expectativas podem estar falando mais alto do que a voz de Jesus?"}
+  ];
+  const daysEl = document.getElementById('days');
+  days.forEach(d=>{
+    const el = document.createElement('div');
+    el.className='day';
+    el.innerHTML = `
+      <button class="day-head">
+        <span class="tag">${d.tag}</span>
+        <span class="title">${d.title}</span>
+        <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div class="day-body"><div class="day-body-inner">
+        ${d.verse ? `<span class="verseref">${d.verse}</span>` : ''}
+        <p>${d.body}</p>
+        <div class="qbox">${d.q}</div>
+      </div></div>`;
+    el.querySelector('.day-head').addEventListener('click', ()=> el.classList.toggle('open'));
+    daysEl.appendChild(el);
+  });
+
+  // ---- Memory verse game ----
+  const verseText = "Se o grão de trigo caindo na terra não morrer fica ele só mas se morrer produz muito fruto";
+  const vgEl = document.getElementById('versewords');
+  verseText.split(' ').forEach(w=>{
+    const span = document.createElement('span');
+    span.textContent = w;
+    span.addEventListener('click', ()=> span.classList.toggle('hidden'));
+    vgEl.appendChild(span);
+  });
+  document.getElementById('verse-reset').addEventListener('click', ()=>{
+    vgEl.querySelectorAll('span').forEach(s=> s.classList.remove('hidden'));
+  });
+
+  // ---- Mind map add word ----
+  const mmInput = document.getElementById('mm-input');
+  const mmAdd = document.getElementById('mm-add');
+  const mindmap = document.getElementById('mindmap');
+  function addWord(){
+    const val = mmInput.value.trim();
+    if(!val) return;
+    const w = document.createElement('div');
+    w.className = 'word added';
+    w.textContent = val;
+    mindmap.appendChild(w);
+    mmInput.value = '';
+  }
+  mmAdd.addEventListener('click', addWord);
+  mmInput.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') addWord(); });
+
+  // ---- Quiz ----
+  const quizData = [
+    {label:"Maria — quero entender o que Jesus está me dizendo, mesmo sem ter todas as respostas", result:"Você tem buscado ouvir de verdade, mesmo quando não entende tudo por completo. Continue perto — foi assim que Maria chegou lá."},
+    {label:"A multidão — estou animado com Jesus, mas ainda espero que Ele resolva as coisas do meu jeito", result:"É comum começar animado e, sem perceber, esperar que Jesus confirme os nossos planos em vez de ouvir os Dele. Vale a pergunta: o que eu realmente quero de Jesus?"},
+    {label:"Judas — às vezes critico coisas que não entendo, por interesses que nem admito pra mim mesmo", result:"Reconhecer isso já é o primeiro passo que Judas nunca deu. Essa semana é um convite para olhar com mais honestidade para os próprios motivos."},
+    {label:"Filipe e André — não tenho grandes respostas, só quero levar alguém até Jesus", result:"Isso é mais do que suficiente. Às vezes o maior ato de fé é simplesmente apontar o caminho, sem precisar ter todas as respostas."}
+  ];
+  const quizEl = document.getElementById('quiz');
+  const resultEl = document.getElementById('quiz-result');
+  quizData.forEach(opt=>{
+    const btn = document.createElement('button');
+    btn.textContent = opt.label;
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('#quiz button').forEach(b=>b.classList.remove('picked'));
+      btn.classList.add('picked');
+      resultEl.textContent = opt.result;
+      resultEl.classList.add('show');
+    });
+    quizEl.appendChild(btn);
+  });
+</script>
+</body>
+</html>
